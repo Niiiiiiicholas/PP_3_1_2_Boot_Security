@@ -20,11 +20,11 @@ import java.util.Arrays;
 
 @Controller
 public class AdminUserController {
-    private UserService userservice;
+    private UserService userService;
 
     @Autowired
-    public AdminUserController(UserService userservice) {
-        this.userservice = userservice;
+    public AdminUserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/user")
@@ -38,9 +38,9 @@ public class AdminUserController {
 
     @GetMapping("/")
     public String home() {
-        if(userservice.listUsers().isEmpty()) {
-            userservice.addUser(new User("admin", "admin", "Nick", "Petrov", 44, "petrov@petr.ru", Arrays.asList("ROLE_ADMIN")));
-            userservice.addUser(new User("user", "user", "Andrey", "Ivanov", 42, "ivanov@andr.ru", Arrays.asList("ROLE_USER")));
+        if(userService.listUsers().isEmpty()) {
+            userService.addUser(new User("admin", "admin", "Nick", "Petrov", 44, "petrov@petr.ru", Arrays.asList("ROLE_ADMIN")));
+            userService.addUser(new User("user", "user", "Andrey", "Ivanov", 42, "ivanov@andr.ru", Arrays.asList("ROLE_USER")));
         }
         return "index";
     }
@@ -48,7 +48,7 @@ public class AdminUserController {
     @GetMapping("/admin")
     public String showUsers(Model model) {
 
-        model.addAttribute("users", userservice.listUsers());
+        model.addAttribute("users", userService.listUsers());
         return "admin";
     }
 
@@ -64,28 +64,28 @@ public class AdminUserController {
     @PostMapping("/admin/register")
     public String inputUser(@ModelAttribute("user") User user) {
 
-        userservice.addUser(user);
+        userService.addUser(user);
         return "redirect:/admin";
     }
 
     @GetMapping("/admin/{id}/edit")
     public String editUser(@PathVariable("id") Long id, Model model) {
 
-        model.addAttribute("editable_user", userservice.getUser(id));
+        model.addAttribute("editable_user", userService.getUser(id));
         return "edit";
     }
 
     @PatchMapping("/admin/{id}")
     public String edit(@ModelAttribute("editable_user") User user, @PathVariable("id") Long id) {
 
-        userservice.editUser(id, user);
+        userService.editUser(id, user);
         return "redirect:/admin";
     }
 
     @DeleteMapping("/admin/{id}")
     public String delete(@PathVariable("id") Long id) {
 
-        userservice.deleteUser(id);
+        userService.deleteUser(id);
         return "redirect:/admin";
     }
 
