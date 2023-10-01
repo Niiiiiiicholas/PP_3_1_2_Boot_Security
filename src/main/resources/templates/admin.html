@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style type="text/css">.text-center {
+        text-align: center;
+    }
+    </style>
+    <title>ADMIN PANEL</title>
+</head>
+<body>
+<h1 style="text-align: center;"><strong>USERS LIST</strong></h1>
+<br>
+<br>
+<div class="text-center"><input type="button" value="Add user" onclick="window.location.href = '/admin/register'"/></div>
+<div class="text-center"><input type="button" value="Your Profile" onclick="window.location.href = '/user'"/></div>
+<div class="text-center"><form th:action="@{/logout}" th:method="POST">
+    <input type="submit" value="Logout"/>
+</form></div>
+
+<br>
+<br>
+<table border="1" align="center" cellspacing="0" cellpadding="3">
+    <tr>
+        <th>UserName</th>
+        <th>FirstName</th>
+        <th>SecondName</th>
+        <th>Age</th>
+        <th>Email</th>
+
+    </tr>
+    <tr  style="text-align:center" th:each="user : ${users}">
+        <td th:text="${user.getUserName()}">UserName</td>
+         <td th:text="${user.getFirstName()}">First Name</td>
+        <td th:text="${user.getSecondName()}">Second Name</td>
+        <td th:text="${user.getAge()}">Age</td>
+        <td th:text="${user.getEmail()}">Email</td>
+        <td th:text="${user.getRoles()}">Role</td>
+        <td> <a th:href="@{/admin/{id}/edit(id=${user.getId()})}">
+        <button type="button">Edit user </button></a>
+        <form th:method="DELETE" th:action="@{/admin/{id}(id=${user.getId()})}">
+        <input type="submit" value = "Delete user"/>
+        </form>
+        </td>
+    </tr>
+        </table>
+
+</form>
+</body>
+</html>
