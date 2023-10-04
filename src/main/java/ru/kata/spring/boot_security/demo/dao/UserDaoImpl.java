@@ -8,6 +8,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserDaoImpl implements UserDao{
@@ -35,13 +36,14 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public void editUser(Long id, User user) {
-        User edit = entityManager.find(User.class, id);
-        edit.setUserName(user.getUserName());
-        edit.setFirstName(user.getFirstName());
-        edit.setSecondName(user.getSecondName());
-        edit.setAge(user.getAge());
-        edit.setEmail(user.getEmail());
-        edit.setPassword(user.getPassword());
+        entityManager.merge(entityManager.find(User.class, id));
+//        User edit = entityManager.find(User.class, id);
+//        edit.setUserName(user.getUserName());
+//        edit.setFirstName(user.getFirstName());
+//        edit.setSecondName(user.getSecondName());
+//        edit.setAge(user.getAge());
+//        edit.setEmail(user.getEmail());
+//        edit.setPassword(user.getPassword());
 
     }
 
@@ -51,8 +53,8 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public List<User> findByUserName(String userName) {
+    public Optional <User> findByUserName(String userName) {
         return entityManager.createQuery("select u from User u join fetch u.roles where  u.userName =:username")
-                .setParameter("username", userName).getResultList();
+                .setParameter("username", userName).getResultStream().findFirst();
     }
 }

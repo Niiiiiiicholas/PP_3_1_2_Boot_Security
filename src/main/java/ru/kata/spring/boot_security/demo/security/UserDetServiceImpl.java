@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.service.security;
+package ru.kata.spring.boot_security.demo.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,6 +9,9 @@ import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import java.util.List;
+import java.util.Optional;
+
+
 @Service
 public class UserDetServiceImpl implements UserDetailsService {
     private final UserDao userDao;
@@ -21,10 +24,8 @@ public class UserDetServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public AccountDet loadUserByUsername(String username) throws UsernameNotFoundException {
-        List<User> user = userDao.findByUserName(username);
-        if (user.size() != 1) {
-            throw new UsernameNotFoundException("User ot found");
-        }
-        return new AccountDet(user.get(0));
+        Optional<User> user = userDao.findByUserName(username);
+        user.orElseThrow(() -> new UsernameNotFoundException("User ot found"));
+        return new AccountDet(user.get());
     }
 }

@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
-import ru.kata.spring.boot_security.demo.service.security.AccountDet;
-
-import java.util.Arrays;
+import ru.kata.spring.boot_security.demo.security.AccountDet;
 
 @Controller
 public class AdminUserController {
@@ -36,22 +34,12 @@ public class AdminUserController {
         return "user";
     }
 
-    @GetMapping("/")
-    public String home() {
-        if(userService.listUsers().isEmpty()) {
-            userService.addUser(new User("admin", "admin", "Nick", "Petrov", 44, "petrov@petr.ru", Arrays.asList("ROLE_ADMIN")));
-            userService.addUser(new User("user", "user", "Andrey", "Ivanov", 42, "ivanov@andr.ru", Arrays.asList("ROLE_USER")));
-        }
-        return "index";
-    }
-
     @GetMapping("/admin")
     public String showUsers(Model model) {
 
         model.addAttribute("users", userService.listUsers());
         return "admin";
     }
-
 
     @GetMapping("/admin/register")
     public String register(Model model) {
