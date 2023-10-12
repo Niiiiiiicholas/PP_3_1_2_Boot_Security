@@ -39,14 +39,12 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public User getUser(Long id) {
-
         return userDao.getUser(id);
     }
 
     @Transactional
     @Override
     public void editUser(Long id, User user) {
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.editUser(id, user);
     }
@@ -54,7 +52,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void deleteUser(Long id) {
-
         userDao.deleteUser(id);
     }
 }

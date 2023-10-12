@@ -27,7 +27,6 @@ public class AdminUserController {
 
     @GetMapping("/user")
     public String showUser(Model model) {
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AccountDet accountDetails = (AccountDet) authentication.getPrincipal();
         model.addAttribute("user", accountDetails.getUser());
@@ -36,14 +35,12 @@ public class AdminUserController {
 
     @GetMapping("/admin")
     public String showUsers(Model model) {
-
         model.addAttribute("users", userService.listUsers());
         return "admin";
     }
 
     @GetMapping("/admin/register")
     public String register(Model model) {
-
         User user = new User();
         model.addAttribute("user", user);
         return "register";
@@ -51,28 +48,24 @@ public class AdminUserController {
 
     @PostMapping("/admin/register")
     public String inputUser(@ModelAttribute("user") User user) {
-
         userService.addUser(user);
         return "redirect:/admin";
     }
 
     @GetMapping("/admin/{id}/edit")
     public String editUser(@PathVariable("id") Long id, Model model) {
-
         model.addAttribute("editable_user", userService.getUser(id));
         return "edit";
     }
 
     @PatchMapping("/admin/{id}")
     public String edit(@ModelAttribute("editable_user") User user, @PathVariable("id") Long id) {
-
         userService.editUser(id, user);
         return "redirect:/admin";
     }
 
     @DeleteMapping("/admin/{id}")
     public String delete(@PathVariable("id") Long id) {
-
         userService.deleteUser(id);
         return "redirect:/admin";
     }
